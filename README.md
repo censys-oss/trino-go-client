@@ -252,6 +252,7 @@ types:
 * integers
 * `bool`
 * `string`
+* `[]byte`
 * slices
 * `trino.Numeric` - a string representation of a number
 * `time.Time` - passed to Trino as a timestamp with a time zone
@@ -311,6 +312,9 @@ structs to the `Scan()` function:
 For two or three dimensional arrays, use `trino.NullSlice2Bool` and
 `trino.NullSlice3Bool` or equivalents for other data types.
 
+`VARBINARY` columns are returned as base64-encoded strings when used within
+`ROW`, `MAP`, or `ARRAY` values.
+
 To read `ROW` values, implement the `sql.Scanner` interface in a struct. Its
 `Scan()` function receives a `[]interface{}` slice, with values of the
 following types:
@@ -318,7 +322,8 @@ following types:
 * `json.Number` for any numeric Trino types
 * `[]interface{}` for Trino arrays
 * `map[string]interface{}` for Trino maps
-* `string` for other Trino types, as character, date, time, or timestamp
+* `string` for other Trino types, as character, date, time, or timestamp.
+  * `VARBINARY` columns are returned as base64-encoded strings
 
 ## License
 
